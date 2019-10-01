@@ -27,6 +27,18 @@ Capstone project for Messaging Systems course
     ```
     docker exec -ti rabbit1 sh -c "rabbitmqadmin declare queue name=mq.messaging durable=true" && \
     docker exec -ti rabbit1 sh -c "rabbitmqadmin declare exchange name=ex.messaging type=direct" && \
-    docker exec -ti rabbit1 sh -c "rabbitmqadmin declare binding source=ex.messaging destination=mq.messaging"
+    docker exec -ti rabbit1 sh -c "rabbitmqadmin declare binding source=ex.messaging destination=mq.messaging" && \
+    docker exec -ti rabbit1 sh -c  'rabbitmqctl set_policy p.mirroring "^mq\." "{\"ha-mode\":\"all\",\"ha-sync-mode\":\"automatic\"}" --priority 1 --apply-to queues'
     ```
+6. start listener 
+    ```
+    cd ./listener
+    ./gradlew bootRun
+    ```
+7. start sender 
+    ```
+    cd ./sender
+    ./gradlew bootRun
+    ```
+8. enjoy by killing of rabbit nodes
 
